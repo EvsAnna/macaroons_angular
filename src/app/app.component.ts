@@ -1,15 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AdvantagesType} from "./types/advantages.type";
 import {ProductType} from "./types/product.type";
+import {ProductsService} from "./services/products.service";
+import {CartService} from "./services/cart.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
- public title = 'macaroons';
- public advantages: AdvantagesType[] = [
+export class AppComponent implements OnInit {
+  public title = 'macaroons';
+  public advantages: AdvantagesType[] = [
     {
       title: 'Лучшие продукты',
       description: 'Мы честно готовим макаруны только из натуральных и качественных продуктов. Мы не используем консерванты, ароматизаторы и красители.'
@@ -28,53 +30,38 @@ export class AppComponent {
     },
   ]
 
- public products: ProductType[] = [
-    {
-      image: '1.png',
-      quantity: 1,
-      title: 'Макарун с малиной',
-      price: '1,70',
-    },
-    {
-      image: '2.png',
-      quantity: 1,
-      title: 'Макарун с манго',
-      price: '1,70',
-    },
-    {
-      image: '3.png',
-      quantity: 1,
-      title: 'Пирог с ванилью',
-      price: '1,70',
-    },
-    {
-      image: '4.png',
-      quantity: 1,
-      title: 'Пирог с фисташками',
-      price: '1,70',
-    },
-  ];
+  public products: ProductType[] = [];
 
- public formValues = {
+  public formValues = {
     productTitle: '',
     userName: '',
     phone: ''
   };
 
- public showPresent: boolean = true;
- public mainPhone: string = '+375 (29) 368-98-68';
- public linkInstagram: string = 'https://www.instagram.com/';
+  public showPresent: boolean = true;
+  public mainPhone: string = '375293689868';
+  public linkInstagram: string = 'https://www.instagram.com/';
 
- public scrollTo(target: HTMLElement): void {
+  public scrollTo(target: HTMLElement): void {
     target.scrollIntoView({behavior: "smooth"});
   }
 
- public addToCard(product: ProductType, target: HTMLElement): void {
-    this.scrollTo(target);
-    this.formValues.productTitle = product.title.toUpperCase();
+
+  constructor(private productsService: ProductsService,
+              public cartService: CartService) {
   }
 
- public orderProduct() {
+  ngOnInit() {
+    this.products = this.productsService.getProducts();
+  }
+
+  public addToCard(product: ProductType, target: HTMLElement): void {
+    this.scrollTo(target);
+    this.formValues.productTitle = product.title.toUpperCase();
+    alert(product.title + ' добавлен в корзину!');
+  }
+
+  public orderProduct() {
     if (!this.formValues.productTitle) {
       alert('Заполните пиццу!');
       return;

@@ -40,12 +40,15 @@
 </svg>
       </div>
       <ul class="menu__items">
-        <li class="menu__item"><a href="javascript:void(0)" class="menu__link" (click)="scrollTo(choose); closeMenu(menu)">Пироженки</a></li>
-        <li class="menu__item"><a href="javascript:void(0)" class="menu__link" (click)="scrollTo(about); closeMenu(menu)">О нас</a></li>
-        <li class="menu__item"><a href="javascript:void(0)" class="menu__link" (click)="scrollTo(order); closeMenu(menu)">Оформить заказ</a></li>
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link"
+                                  (click)="scrollTo(choose); closeMenu(menu)">Пироженки</a></li>
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link"
+                                  (click)="scrollTo(about); closeMenu(menu)">О нас</a></li>
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link"
+                                  (click)="scrollTo(order); closeMenu(menu)">Оформить заказ</a></li>
       </ul>
     </nav>
-    <div class="phone header__phone">{{mainPhone}}</div>
+    <div class="phone header__phone">{{ mainPhone | phonePattern }}</div>
   </div>
 </header>
 
@@ -57,7 +60,9 @@
         Побалуйте себя и своих близких самыми вкусными и ароматными домашними пироженками
         Macaroon!
       </div>
-      <button class="button info__button" (click)="scrollTo(choose)">Выбрать макарун</button>
+      <button class="button info__button" (click)="scrollTo(choose)" buttonBg
+              [buttonBgDefaultColor]="'#821328'">Выбрать макарун
+      </button>
     </div>
 
     <div class="info__image">
@@ -88,13 +93,8 @@
       <img src="./assets/image/about_img.png" alt="макарун" class="about__img">
     </div>
     <div class="about__advantages">
-      <div class="about__advantage" *ngFor="let advantage of advantages; let i = index">
-        <div class="about__advantage-circle">
-          <div class="about__advantage-number">{{ i + 1 }}</div>
-        </div>
-        <div class="about__advantage-title">{{ advantage.title }}</div>
-        <div class="about__advantage-text">{{ advantage.description }}</div>
-      </div>
+      <advantage *ngFor="let advantage of advantages; let i = index" [advantage]="advantage"
+                 [i]="i"></advantage>
     </div>
   </div>
 </section>
@@ -103,22 +103,8 @@
 <section class="choose" #choose>
   <div class="container choose__container">
     <h2 class="choose__title">Выберите свой макарун</h2>
-
-    <div class="card" *ngFor="let product of products">
-      <div class="card__image">
-        <img src="./assets/image/card/{{product.image}}" alt="{{product.title}}">
-      </div>
-      <div class="card__title">{{ product.title }}</div>
-      <div class="card__info">
-        <div class="card__quantity">{{ product.quantity }} шт.</div>
-        <div class="card__price">{{ product.price }} руб.</div>
-        <div class="card__action">
-          <button class="button card__button" (click)="addToCard(product, order)">Заказать</button>
-        </div>
-      </div>
-    </div>
-
-
+    <products *ngFor="let product of products" [product]="product"
+              (addToCart)="addToCard($event, order)"></products>
   </div>
 </section>
 
@@ -138,12 +124,15 @@
         <input class="form__input" type="text" name="order" required
                placeholder="Напишите, что хотите заказать..." [(ngModel)]="formValues.productTitle">
         <div class="form__text form__text_indent">Заполните данные для заказа</div>
-        <input class="form__input" type="text" name="name" placeholder="Ваше имя" [(ngModel)]="formValues.userName">
+        <input class="form__input" type="text" name="name" placeholder="Ваше имя"
+               [(ngModel)]="formValues.userName">
         <input class="form__input" type="text" name="phone" [(ngModel)]="formValues.phone"
                placeholder="+375 (__) ___ - __ - __">
 
         <div class="order__action">
-          <button type="submit" class="button order__button"(click)="orderProduct()">Оформить заказ</button>
+          <button type="button" class="button order__button" (click)="orderProduct()" buttonBg>Оформить
+            заказ
+          </button>
         </div>
       </form>
     </div>
@@ -152,12 +141,34 @@
   </div>
 </section>
 
+<footer class="footer">
+  <div class="container footer__container">
+    <div class="logo footer__logo">
+      <a href="#">
+        <img src="./assets/image/logo.png" alt="Macaroons">
+      </a>
+    </div>
+    <div class="footer__right">
+      Все права защищены, 2020
+    </div>
+    <a href="{{linkInstagram}}" class="instagram">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="35px" height="35px">
+        <image x="0px" y="0px" width="35px" height="35px"
+               xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAQAAAC00HvSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfoCw4OJjanNk7aAAAC0ElEQVRIx52WTWtUZxSAnxljohY3tk7URBAhBMeiERRRoxHFKlqCQruoCOKiYHfdVH9AUVzaGiNpt+0fcKMofmO3VRNN/YjFUFozamhnRDHIPF3MO9ebe68643kXwz3vOc+c93zc++Ykkjyb2cpaOmgnD8ymlbhM8RKo8g/jjHCWS1SjPevrS8dsTh66t+5d+5nhUJOIuvxiq0hOgJ/4GoAqF7jIPSYpRwFXaKUtCn4281jASj6jO2h+ZV/tULsD+brd0vDa5oPg95Vg3ruq/lYLr4k133uq3jePG1WtWmzY/ZB/O2Kv2Bvi2YTHVL3cMKQruI6I+Luq37ewCoBzZEkbfazkI0qMcZlXAHwc9uYBcJ4eYA3hfHtS/1rwpOVYaSuesiC2eE3VwyIeUPUOwXRDAtJnKaNLnrpFbHF9VNOdqk4SDJYlIFNBX/WG57xhNTxPuWWa5WZV/61jlsS2PokiGXBh0LU7EEVUiNmuezvmx6DbnzjovqA/FdP1qPoqjWn1P1UHM4o9EJLdlsCYxmwNOenMwLSHHO1IYvKpXukC4DZ/ZfTRBLcAWJHcSGMKADwhW0oAzHk/phKDpaUQg70TMwxAkc4MyMJwnAepnVSKZ4ZKDb21UuVGKoXHg+5AArI/6E820jfxLh6Kyt7pYNCVpnXx6uldvDQxUy+imRrxosOxmerLnqlnqq5KTfhExoSXEhD8vDbh+dAhixOZv8JyfqAc05Q5QZErCbuOWgO08CfdwKecThg85Vu+YxNdFKgwzFWmMlqgCMAjPKrqtSa/CvX1h6pHcH0497oPgGwPvr2Yc1TVMec3CelwXNVRc4j9gTmWeEG+L5Lx4Ndf/4YP8k1I2SgXuMMEk7zmeSqhs5jFXBZRZBvLgm6Ig0Q3ikE/TH52hhi73/SHHDUud/2i7p2bdtvawC56WMoC5ma+bapUeM1jHnGTM1x/c9v6Hw83+Z3bJ68/AAAAAElFTkSuQmCC"/>
+      </svg>
+      <div class="instagram__text">Мы в Instagram</div>
+    </a>
+    <div class="phone footer__phone">{{ mainPhone | phonePattern }}</div>
+  </div>
+</footer>
 
 <div class="present" *ngIf="showPresent">
-  <div class="present__window">
-    Оформите заказ и получите подарок!
+  <div class="present__window" *ngIf="cartService.summCount">{{ cartService.summCount | currency }}</div>
+  <div class="present__circle">
+    <img src="./assets/image/cart.png" alt="present" class="present__img">
+    <div class="cart-number">{{ cartService.count }}</div>
   </div>
-  <a href="#" class="present__circle">
-    <img src="./assets/image/present.png" alt="present" class="present__img">
-  </a>
 </div>
