@@ -1,27 +1,27 @@
 # Macaroons
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.13.
+Этот проект разработан [Angular CLI](https://github.com/angular/angular-cli) версии 14.2.13.
 
-## Development server
+## О проекте
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Данный проект является учебным и демонстрирует навыки разработки фронтенд-приложений на Angular.
 
-## Code scaffolding
+## Как запустить:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* Клонируйте репозиторий: git clone https://github.com/EvsAnna/macaroons_angular.git
+* Убедитесь, что у вас установлен Node.js
+* Установите зависимости: `npm install`
+* Запустите Сервер разработки `ng serve`
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Сервер разработки
 
-## Running unit tests
+Запустите `ng serve` для сервера разработки. Перейдите по адресу `http://localhost:4200/`. Приложение автоматически перезагрузится при изменении любого исходного файла.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Сборка
 
-## Running end-to-end tests
+Запустите `ng build` для сборки проекта. Артефакты сборки будут сохранены в каталоге `dist/`.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Дополнительная помощь
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Чтобы получить дополнительную справку по Angular CLI, используйте `ng help` или посетите страницу [Обзор и справочник команд Angular CLI] (https://angular.io/cli).
